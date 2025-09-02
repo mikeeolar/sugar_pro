@@ -79,6 +79,14 @@ mixin _$User {
   bool? get isDeleted => throw _privateConstructorUsedError;
   @HiveField(22)
   String? get loginUsername => throw _privateConstructorUsedError;
+  @HiveField(23)
+  String? get token => throw _privateConstructorUsedError;
+  @HiveField(24)
+  String? get pin => throw _privateConstructorUsedError;
+  @HiveField(25)
+  String? get refreshToken => throw _privateConstructorUsedError;
+  @HiveField(26)
+  String? get image => throw _privateConstructorUsedError;
 
   /// Serializes this User to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -131,7 +139,11 @@ abstract class $UserCopyWith<$Res> {
       String? modifiedByIp,
       String? modifiedDate,
       bool? isDeleted,
-      @HiveField(22) String? loginUsername});
+      @HiveField(22) String? loginUsername,
+      @HiveField(23) String? token,
+      @HiveField(24) String? pin,
+      @HiveField(25) String? refreshToken,
+      @HiveField(26) String? image});
 }
 
 /// @nodoc
@@ -186,6 +198,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? modifiedDate = freezed,
     Object? isDeleted = freezed,
     Object? loginUsername = freezed,
+    Object? token = freezed,
+    Object? pin = freezed,
+    Object? refreshToken = freezed,
+    Object? image = freezed,
   }) {
     return _then(_value.copyWith(
       customerId: freezed == customerId
@@ -336,6 +352,22 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.loginUsername
           : loginUsername // ignore: cast_nullable_to_non_nullable
               as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pin: freezed == pin
+          ? _value.pin
+          : pin // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -384,7 +416,11 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
       String? modifiedByIp,
       String? modifiedDate,
       bool? isDeleted,
-      @HiveField(22) String? loginUsername});
+      @HiveField(22) String? loginUsername,
+      @HiveField(23) String? token,
+      @HiveField(24) String? pin,
+      @HiveField(25) String? refreshToken,
+      @HiveField(26) String? image});
 }
 
 /// @nodoc
@@ -436,6 +472,10 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? modifiedDate = freezed,
     Object? isDeleted = freezed,
     Object? loginUsername = freezed,
+    Object? token = freezed,
+    Object? pin = freezed,
+    Object? refreshToken = freezed,
+    Object? image = freezed,
   }) {
     return _then(_$UserImpl(
       customerId: freezed == customerId
@@ -586,6 +626,22 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.loginUsername
           : loginUsername // ignore: cast_nullable_to_non_nullable
               as String?,
+      token: freezed == token
+          ? _value.token
+          : token // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pin: freezed == pin
+          ? _value.pin
+          : pin // ignore: cast_nullable_to_non_nullable
+              as String?,
+      refreshToken: freezed == refreshToken
+          ? _value.refreshToken
+          : refreshToken // ignore: cast_nullable_to_non_nullable
+              as String?,
+      image: freezed == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -630,7 +686,11 @@ class _$UserImpl implements _User {
       this.modifiedByIp,
       this.modifiedDate,
       this.isDeleted,
-      @HiveField(22) this.loginUsername})
+      @HiveField(22) this.loginUsername,
+      @HiveField(23) this.token,
+      @HiveField(24) this.pin,
+      @HiveField(25) this.refreshToken,
+      @HiveField(26) this.image})
       : _accounts = accounts;
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -740,10 +800,22 @@ class _$UserImpl implements _User {
   @override
   @HiveField(22)
   final String? loginUsername;
+  @override
+  @HiveField(23)
+  final String? token;
+  @override
+  @HiveField(24)
+  final String? pin;
+  @override
+  @HiveField(25)
+  final String? refreshToken;
+  @override
+  @HiveField(26)
+  final String? image;
 
   @override
   String toString() {
-    return 'User(customerId: $customerId, bvn: $bvn, nin: $nin, userName: $userName, fullName: $fullName, lastName: $lastName, firstName: $firstName, middleName: $middleName, email: $email, fax: $fax, phoneNumber1: $phoneNumber1, phoneNumber2: $phoneNumber2, dateOfBirth: $dateOfBirth, gender: $gender, maritalStatus: $maritalStatus, addressLine1: $addressLine1, addressLine2: $addressLine2, city: $city, stateId: $stateId, state: $state, lgaId: $lgaId, lga: $lga, status: $status, platform: $platform, isFaceVerified: $isFaceVerified, isLimitRestricted: $isLimitRestricted, accounts: $accounts, referralCode: $referralCode, id: $id, createdBy: $createdBy, createdByIp: $createdByIp, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedByIp: $modifiedByIp, modifiedDate: $modifiedDate, isDeleted: $isDeleted, loginUsername: $loginUsername)';
+    return 'User(customerId: $customerId, bvn: $bvn, nin: $nin, userName: $userName, fullName: $fullName, lastName: $lastName, firstName: $firstName, middleName: $middleName, email: $email, fax: $fax, phoneNumber1: $phoneNumber1, phoneNumber2: $phoneNumber2, dateOfBirth: $dateOfBirth, gender: $gender, maritalStatus: $maritalStatus, addressLine1: $addressLine1, addressLine2: $addressLine2, city: $city, stateId: $stateId, state: $state, lgaId: $lgaId, lga: $lga, status: $status, platform: $platform, isFaceVerified: $isFaceVerified, isLimitRestricted: $isLimitRestricted, accounts: $accounts, referralCode: $referralCode, id: $id, createdBy: $createdBy, createdByIp: $createdByIp, createdDate: $createdDate, modifiedBy: $modifiedBy, modifiedByIp: $modifiedByIp, modifiedDate: $modifiedDate, isDeleted: $isDeleted, loginUsername: $loginUsername, token: $token, pin: $pin, refreshToken: $refreshToken, image: $image)';
   }
 
   @override
@@ -811,7 +883,12 @@ class _$UserImpl implements _User {
             (identical(other.isDeleted, isDeleted) ||
                 other.isDeleted == isDeleted) &&
             (identical(other.loginUsername, loginUsername) ||
-                other.loginUsername == loginUsername));
+                other.loginUsername == loginUsername) &&
+            (identical(other.token, token) || other.token == token) &&
+            (identical(other.pin, pin) || other.pin == pin) &&
+            (identical(other.refreshToken, refreshToken) ||
+                other.refreshToken == refreshToken) &&
+            (identical(other.image, image) || other.image == image));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -854,7 +931,11 @@ class _$UserImpl implements _User {
         modifiedByIp,
         modifiedDate,
         isDeleted,
-        loginUsername
+        loginUsername,
+        token,
+        pin,
+        refreshToken,
+        image
       ]);
 
   /// Create a copy of User
@@ -911,7 +992,11 @@ abstract class _User implements User {
       final String? modifiedByIp,
       final String? modifiedDate,
       final bool? isDeleted,
-      @HiveField(22) final String? loginUsername}) = _$UserImpl;
+      @HiveField(22) final String? loginUsername,
+      @HiveField(23) final String? token,
+      @HiveField(24) final String? pin,
+      @HiveField(25) final String? refreshToken,
+      @HiveField(26) final String? image}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
 
@@ -1011,6 +1096,18 @@ abstract class _User implements User {
   @override
   @HiveField(22)
   String? get loginUsername;
+  @override
+  @HiveField(23)
+  String? get token;
+  @override
+  @HiveField(24)
+  String? get pin;
+  @override
+  @HiveField(25)
+  String? get refreshToken;
+  @override
+  @HiveField(26)
+  String? get image;
 
   /// Create a copy of User
   /// with the given fields replaced by the non-null parameter values.

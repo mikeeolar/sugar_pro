@@ -13,8 +13,8 @@ class PatientAccountViewModel extends IndexTrackingViewModel {
     notifyListeners();
   }
 
-  void navigateToSetupPin() {
-    _navigationService.navigateTo(Routes.setupPin);
+  void navigateToFormsAgreement() {
+    _navigationService.navigateTo(Routes.formsAgreement);
   }
 
   void forward() {

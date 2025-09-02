@@ -114,27 +114,6 @@ class CustomTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<CustomTextField> {
-  // final Color _color = const Color(0XFFFFF4E1);
-
-  final FocusNode _focusNode = FocusNode();
-  bool _isFocused = false;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _focusNode.addListener(() {
-      setState(() {
-        _isFocused = _focusNode.hasFocus;
-      });
-    });
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +292,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   },
                   textDirection: widget.textDirection,
                   inputFormatters: getFormertter(),
-                  focusNode: _focusNode,
                   autofocus: widget.autofocus,
                   showCursor: widget.showCusor,
                   cursorColor: BrandColors.bc2C2948,
@@ -342,7 +320,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   decoration: InputDecoration(
                     isDense: true,
                     filled: true,
-                    fillColor: _isFocused ? hexColor('#FFFFEA') : hexColor('#F8FAFC'),
+                    fillColor: widget.fillColor ?? hexColor('#F8FAFC'),
                     hintText: widget.hintText ?? '',
                     hintStyle: widget.hintStyle ??
                         BrandTextStyles.regular.copyWith(
@@ -362,20 +340,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     border: widget.inputBorder ??
                         OutlineInputBorder(
                             borderSide:
-                                const BorderSide(color: Color(0xFFC8C83A)),
+                                const BorderSide(color: Color(0XFFD1D5DC)),
                             borderRadius:
                                 BorderRadius.circular(widget.radius ?? 8.r)),
                     focusedBorder: widget.inputBorder ??
                         OutlineInputBorder(
                             borderSide:
-                                const BorderSide(color: Color(0xFFC8C83A)),
+                                BorderSide(color: hexColor('#2889AA')),
                             borderRadius:
                                 BorderRadius.circular(widget.radius ?? 8.r)),
                     enabledBorder: widget.inputBorder ??
                         OutlineInputBorder(
                             borderSide: BorderSide(
                                 color:
-                                    widget.borderColor ?? hexColor('#E6EBF0')),
+                                    widget.borderColor ?? hexColor('#D1D5DC')),
                             borderRadius:
                                 BorderRadius.circular(widget.radius ?? 8.r)),
                     disabledBorder: OutlineInputBorder(

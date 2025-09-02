@@ -83,20 +83,11 @@ class PaPage9 extends StatelessWidget {
                           ),
                         ),
                         30.verticalSpace,
-                        TypeSelector(
-                          text: 'Email',
-                          active: true,
-                        ),
+                        TypeSelector(text: 'Email', active: true),
                         20.verticalSpace,
-                        TypeSelector(
-                          text: 'Text',
-                          active: false,
-                        ),
+                        TypeSelector(text: 'Text', active: false),
                         20.verticalSpace,
-                        TypeSelector(
-                          text: 'App Notifications',
-                          active: false,
-                        ),
+                        TypeSelector(text: 'App Notifications', active: false),
                         20.verticalSpace,
                       ],
                     ),
@@ -118,7 +109,7 @@ class PaPage9 extends StatelessWidget {
                       Expanded(
                         child: CustomButton(
                           onTap: () {
-                            viewModel.forward();
+                            viewModel.navigateToFormsAgreement();
                           },
                           title: 'Next',
                         ),
@@ -147,7 +138,9 @@ class TypeSelector extends StatelessWidget {
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
-          side: BorderSide(color: active ? hexColor('#133A59'): hexColor('#D4D4D4')),
+          side: BorderSide(
+            color: active ? hexColor('#133A59') : hexColor('#D4D4D4'),
+          ),
         ),
       ),
       child: Row(

@@ -1,6 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:encrypt/encrypt.dart' as prefix0;
-import 'package:encrypt/encrypt.dart';
 import 'package:sugar_pros/core/enums/transaction_service_type.dart';
 import 'package:sugar_pros/core/utils/exports.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -22,22 +20,6 @@ class Utils {
       NumberFormat('#,###.##')
         ..minimumFractionDigits = 2
         ..maximumFractionDigits = 2;
-
-  static final iv = IV.fromUtf8(AppEnv().iv);
-
-  static Encrypter crypt() {
-    final appKey = AppEnv().encryptionAppKey;
-    final key = prefix0.Key.fromUtf8(appKey);
-    return Encrypter(AES(key, mode: prefix0.AESMode.cbc));
-  }
-
-  static String encryptData(String data) {
-    return crypt().encrypt(data, iv: iv).base64;
-  }
-
-  static String decryptData(String data) {
-    return crypt().decrypt64(data, iv: iv);
-  }
 
   static final SystemUiOverlayStyle darkTheme =
       Platform.isIOS

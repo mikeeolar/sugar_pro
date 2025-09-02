@@ -12,7 +12,9 @@ class SplashView extends StackedView<SplashViewModel> {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Future.delayed(2.seconds, () {
           if (viewModel.user == null) {
+            viewModel.navigateToAuthView();
           } else {
+            // viewModel.navigateToPatientLogin();
             viewModel.navigateToAuthView();
           }
         });
@@ -29,17 +31,12 @@ class SplashView extends StackedView<SplashViewModel> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: context.isDarkMode ? Utils.lightdarkNav : Utils.lightThemeNav,
       child: Scaffold(
-        body: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image.asset(
-              'bg'.png,
-              fit: BoxFit.cover,
-              height: 1000.h,
-              width: double.infinity,
-            ),
-            Image.asset('tatum'.png, height: 94.h),
-          ],
+        body: Center(
+          child: Image.asset(
+            'logo'.png,
+            height: 70.h,
+            width: double.infinity,
+          ),
         ),
       ),
     );

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:sugar_pros/core/utils/exports.dart';
 
 Widget handle({Color? color}) {
@@ -23,6 +24,16 @@ Color hexColor(String hexColor) {
   }
   final int? temp = int.tryParse(hex);
   return Color(temp ?? 0xFFE41613);
+}
+
+String safeDateParse(String? date) {
+  if (date == null || date.isEmpty) return '';
+  try {
+    final parsed = DateFormat('yyyy-M-d').parse(date);
+    return parsed.toString();
+  } catch (e) {
+    return '';
+  }
 }
 
 Widget bottomHeight(BuildContext context, double height) {

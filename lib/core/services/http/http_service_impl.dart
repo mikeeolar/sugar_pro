@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
+
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 import 'package:sugar_pros/core/exceptions/auth_exception.dart';
 import 'package:sugar_pros/core/models/user/user.dart';
 import 'package:sugar_pros/core/services/device_info_service.dart';
-import 'package:sugar_pros/core/services/secure_storage_service.dart';
 import 'package:sugar_pros/core/services/user_service.dart';
 import 'package:sugar_pros/core/utils/error_handler.dart';
 import 'package:sugar_pros/core/utils/exports.dart';
@@ -14,54 +13,52 @@ import '../../utils/network_utils.dart' as network_utils;
 class HttpServiceImpl extends HttpService {
   final DeviceInfoService _deviceInfo = locator<DeviceInfoService>();
   final UserService _userService = locator<UserService>();
-  final NavigationService _navigation = locator<NavigationService>();
-  final SecureStorageService _secureStorage = locator<SecureStorageService>();
 
   User? get user => _userService.user;
 
-  final Dio _dio = Dio(BaseOptions(connectTimeout: 2.minutes));
-  bool _enableEncryption = true;
+  final Dio _dio =
+      Dio(BaseOptions(connectTimeout: const Duration(minutes: 2)))
+        ..interceptors.add(
+          PrettyDioLogger(
+            requestHeader: true,
+            requestBody: true,
+            responseBody: true,
+            error: true,
+            compact: true,
+            enabled: false, //AppEnv().appDebug == 'true',
+            maxWidth: 90,
+          ),
+        )
+        ..interceptors.add(
+          InterceptorsWrapper(
+            onRequest: (options, handler) {
+              log('🔼 Request: [${options.method}] ${options.uri}');
+              log('📦 Data: ${options.data}');
+              handler.next(options);
+            },
+            onResponse: (response, handler) {
+              if (response.requestOptions.path.contains('/BusinessProfiles')) {
+                debugPrint('✅ Business Profile response: ${(response.data)}');
+              }
 
-  HttpServiceImpl() {
-    _dio.interceptors.add(
-      PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        error: true,
-        compact: true,
-        enabled: AppEnv().appDebug == 'true',
-        maxWidth: 90,
-        logPrint: (object) => !kReleaseMode ? debugPrint(object.toString()) : null,
-      ),
-    );
-    _dio.interceptors.add(
-      InterceptorsWrapper(
-        onRequest: (options, handler) {
-          log('Sending request: ${options.data} ${options.uri}');
-
-          if (_enableEncryption && options.data is String) {
-            options.data = Utils.encryptData(options.data);
-          }
-          handler.next(options);
-        },
-        onResponse: (response, handler) {
-          log('Received response [${response.statusCode}] from ${response.requestOptions.uri}');
-          if (_enableEncryption && response.data is String) {
-            try {
-              final decrypted = Utils.decryptData(response.data);
-              log('Decrypted response data: $decrypted');
-              response.data = decrypted;
-            } catch (_) {}
-          }
-          handler.next(response);
-        },
-      ),
-    );
-  }
+              log('✅ Response [${response.statusCode}] from ${response.requestOptions.uri}');
+              log('📨 Data: ${response.data}');
+              handler.next(response);
+            },
+            onError: (error, handler) {
+              log('❌ Error: ${error.message}');
+              if (error.response != null) {
+                log('📉 Response: ${error.response?.data}');
+              }
+              handler.next(error);
+            },
+          ),
+        );
 
   @override
-  void toggleEncryption(bool enabled) => _enableEncryption = enabled;
+  void toggleEncryption(bool enabled) {
+    // No-op: Encryption disabled
+  }
 
   @override
   Future<void> setHeader({bool formdata = false, bool formEncoded = false}) async {
@@ -72,7 +69,7 @@ class HttpServiceImpl extends HttpService {
             ? 'application/x-www-form-urlencoded'
             : 'application/json';
 
-    final token = await _secureStorage.readToken();
+    final token = user?.token ?? '';
 
     _dio.options.headers = {
       'content-type': contentType,
@@ -80,9 +77,7 @@ class HttpServiceImpl extends HttpService {
       'AppVersion': _deviceInfo.version,
       'DeviceId': _deviceInfo.id,
       'REMOTE_ADDR': _deviceInfo.ip,
-      'AppId': Utils.encryptData(AppEnv().appId),
-      'AppKey': Utils.encryptData(AppEnv().appKey),
-      if (user != null && token != null) 'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer $token',
     };
   }
 
@@ -95,8 +90,7 @@ class HttpServiceImpl extends HttpService {
   @override
   void clearHeaders() => _dio.options.headers.clear();
 
-  String _buildUrl(String route) =>
-      '${AppEnv().api}$route';
+  String _buildUrl(String route) => '${AppEnv().api}$route';
 
   Options _buildOptions({required String contentType}) =>
       Options(contentType: contentType, responseType: ResponseType.plain);
@@ -138,7 +132,7 @@ class HttpServiceImpl extends HttpService {
     bool formdata = false,
     bool useCache = false,
     bool formEncoded = false,
-    bool decrypt = true,
+    bool decrypt = true, // Can be removed if not used externally
   }) async {
     final url = _buildUrl(route);
     body.removeWhere((_, value) => value == null);
@@ -160,9 +154,9 @@ class HttpServiceImpl extends HttpService {
         queryParameters: params,
         options: _buildOptions(contentType: contentType),
       );
-      return _handleResponse(response, decrypt: decrypt);
+      return _handleResponse(response);
     } on DioException catch (e) {
-      _handleDioException(e, url, decrypt);
+      _handleDioException(e, url);
     }
     return FormattedResponse(success: false, data: null);
   }
@@ -193,7 +187,7 @@ class HttpServiceImpl extends HttpService {
     dynamic body, {
     Map<String, dynamic>? params,
     bool formdata = false,
-    bool decrypt = true,
+    bool decrypt = true, // Can be removed if not used externally
   }) async {
     final url = _buildUrl(route);
     body?.removeWhere((_, value) => value == null);
@@ -241,10 +235,10 @@ class HttpServiceImpl extends HttpService {
     return FormattedResponse(success: false, data: null);
   }
 
-  FormattedResponse _handleResponse(Response response, {bool decrypt = true}) {
+  FormattedResponse _handleResponse(Response response) {
     final success = [200, 201, 204].contains(response.statusCode);
     final raw = response.data.toString();
-    final data = decrypt ? _tryDecode(() => jsonDecode(raw)) : _tryDecode(() => raw);
+    final data = _tryDecode(() => jsonDecode(raw));
     return FormattedResponse(success: success, data: data);
   }
 
@@ -256,18 +250,38 @@ class HttpServiceImpl extends HttpService {
     }
   }
 
-  void _handleDioException(DioException e, String url, [bool decrypt = true]) {
+  void _handleDioException(DioException e, String url) {
     Logger.e('HTTP Error [$url]: ${e.message}');
     if (e.response?.statusCode == 401) {
-      if (Navigator.of(StackedService.navigatorKey!.currentContext!).canPop()) {
-        _navigation.clearStackAndShow(Routes.login);
-      }
+      if (Navigator.of(StackedService.navigatorKey!.currentContext!).canPop()) {}
       throw const AuthException('Session Expired');
     }
-    if (decrypt && e.response?.data != null) {
-      Logger.e('Decrypted error: ${Utils.decryptData(e.response?.data)}');
-      log('Decrypted error: ${Utils.decryptData(e.response?.data)}');
-    }
     ErrorHandler.parseError(e);
+  }
+
+  String safeJsonLog(dynamic data) {
+    dynamic sanitize(dynamic value) {
+      if (value is String && _isBase64(value)) {
+        return '(base64 omitted)';
+      } else if (value is Map) {
+        return value.map((k, v) => MapEntry(k, sanitize(v)));
+      } else if (value is List) {
+        return value.map(sanitize).toList();
+      }
+      return value;
+    }
+
+    try {
+      final cleaned = sanitize(data);
+      return const JsonEncoder.withIndent('  ').convert(cleaned);
+    } catch (e) {
+      return data.toString();
+    }
+  }
+
+  bool _isBase64(String str) {
+    if (str.length < 100) return false;
+    final base64Regex = RegExp(r'^[A-Za-z0-9+/]+={0,2}$');
+    return base64Regex.hasMatch(str);
   }
 }

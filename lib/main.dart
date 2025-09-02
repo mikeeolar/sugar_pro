@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sugar_pros/firebase_options.dart';
-import 'package:sugar_pros/ui/views/auth/auth_view.dart';
 import 'package:root_jailbreak_sniffer/rjsniffer.dart';
 import 'package:sugar_pros/core/constants/setup_dialog.dart';
 import 'package:sugar_pros/core/managers/lifecycle_manager.dart';
@@ -13,6 +12,7 @@ import 'package:sugar_pros/core/services/push_notification/push_notification_ser
 import 'package:sugar_pros/core/utils/exports.dart';
 import 'package:sugar_pros/core/utils/preload_images_util.dart';
 import 'package:sugar_pros/styles/theme/theme.dart' as theme;
+import 'package:sugar_pros/ui/views/splash/splash_view.dart';
 
 final FirebaseCrashlytics _crashlytics = FirebaseCrashlytics.instance;
 
@@ -123,7 +123,7 @@ class App extends StatelessWidget {
                 onGenerateRoute: Routers().onGenerateRoute,
                 navigatorKey: StackedService.navigatorKey,
                 theme: theme.lightTheme,
-                home: const AuthView(),
+                home: const SplashView(),
                 navigatorObservers: [
                   StackedService.routeObserver,
                   FirebaseAnalyticsObserver(analytics: analytics),

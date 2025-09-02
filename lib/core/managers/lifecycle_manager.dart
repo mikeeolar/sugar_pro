@@ -12,7 +12,7 @@ class LifeCycleManager extends StatefulWidget {
 }
 
 class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBindingObserver {
-  final NavigationService _navigationService = locator<NavigationService>();
+  // final NavigationService _navigationService = locator<NavigationService>();
   final UserService _userService = locator<UserService>();
   final UtilityService _utilityService = locator<UtilityService>();
   // final SecureStorageService _secureStorageService = locator<SecureStorageService>();
@@ -83,7 +83,7 @@ class _LifeCycleManagerState extends State<LifeCycleManager> with WidgetsBinding
   void _handleInactivityTimeout() {
     if (_utilityService.signedIn) {
       Logger.w('User inactive for ${_inactivityTimeout.inMinutes} minutes. Logging out.');
-      _navigationService.clearStackAndShow(Routes.login);
+      // _navigationService.clearStackAndShow(Routes.login);
       _utilityService.setSignedIn(false);
     }
   }

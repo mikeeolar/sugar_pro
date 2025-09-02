@@ -48,10 +48,15 @@ class CustomNetworkImage extends StatelessWidget {
         ),
       ),
       errorWidget: (context, url, error) =>
-          errorImage ??
-          Icon(
-            Icons.person,
-            size: 30.h,
+          CircleAvatar(
+            backgroundColor: BrandColors.primary,
+            radius: 40.r,
+            child: errorImage ??
+            Icon(
+              Icons.person,
+              size: 30.h,
+              color: Colors.white,
+            ),
           ),
     );
   }

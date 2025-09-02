@@ -47,6 +47,10 @@ class User with _$User {
     String? modifiedDate,
     bool? isDeleted,
     @HiveField(22) String? loginUsername,
+    @HiveField(23) String? token,
+    @HiveField(24) String? pin,
+    @HiveField(25) String? refreshToken,
+    @HiveField(26) String? image,
   }) = _User;
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

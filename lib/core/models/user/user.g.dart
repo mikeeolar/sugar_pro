@@ -39,13 +39,17 @@ class UserAdapter extends TypeAdapter<User> {
       isLimitRestricted: fields[19] as bool?,
       id: fields[20] as String?,
       loginUsername: fields[22] as String?,
+      token: fields[23] as String?,
+      pin: fields[24] as String?,
+      refreshToken: fields[25] as String?,
+      image: fields[26] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(22)
+      ..writeByte(26)
       ..writeByte(0)
       ..write(obj.customerId)
       ..writeByte(1)
@@ -89,7 +93,15 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(20)
       ..write(obj.id)
       ..writeByte(22)
-      ..write(obj.loginUsername);
+      ..write(obj.loginUsername)
+      ..writeByte(23)
+      ..write(obj.token)
+      ..writeByte(24)
+      ..write(obj.pin)
+      ..writeByte(25)
+      ..write(obj.refreshToken)
+      ..writeByte(26)
+      ..write(obj.image);
   }
 
   @override
@@ -145,6 +157,10 @@ _$UserImpl _$$UserImplFromJson(Map<String, dynamic> json) => _$UserImpl(
       modifiedDate: json['modifiedDate'] as String?,
       isDeleted: json['isDeleted'] as bool?,
       loginUsername: json['loginUsername'] as String?,
+      token: json['token'] as String?,
+      pin: json['pin'] as String?,
+      refreshToken: json['refreshToken'] as String?,
+      image: json['image'] as String?,
     );
 
 Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
@@ -186,4 +202,8 @@ Map<String, dynamic> _$$UserImplToJson(_$UserImpl instance) =>
       'modifiedDate': instance.modifiedDate,
       'isDeleted': instance.isDeleted,
       'loginUsername': instance.loginUsername,
+      'token': instance.token,
+      'pin': instance.pin,
+      'refreshToken': instance.refreshToken,
+      'image': instance.image,
     };

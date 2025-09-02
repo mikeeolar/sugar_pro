@@ -6,129 +6,85 @@ class AuthView extends StackedView<AuthViewModel> {
 
   @override
   Widget builder(BuildContext context, AuthViewModel viewModel, Widget? child) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 18.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 30.h),
-                Text(
-                  'Select your identity',
-                  style: BrandTextStyles.semiBold.copyWith(
-                    color: Colors.black,
-                    fontSize: 24.sp,
-                    height: 0,
-                  ),
-                ),
-                SizedBox(height: 27.h),
-                GestureDetector(
-                  onTap: () {
-                    viewModel.navigateToPatientRegister();
-                  },
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.fromLTRB(13.w, 13.h, 13.w, 23.h),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF7F7F7),
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          width: 0.50,
-                          color: Color(0xFFCBCBCB),
-                        ),
-                        borderRadius: BorderRadius.circular(12.sp),
-                      ),
+    return AnnotatedRegion(
+      value: Utils.dark,
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 18.w),
+              child: Column(
+                children: [
+                  20.verticalSpace,
+                  Image.asset('logo'.png, height: 52.h),
+                  Text(
+                    'Are you a Patient or Provider?',
+                    style: BrandTextStyles.semiBold.copyWith(
+                      color: hexColor('#121212'),
+                      fontSize: 24.sp,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ),
+                  5.verticalSpace,
+                  Text(
+                    'Select one to access an account.',
+                    style: BrandTextStyles.regular.copyWith(
+                      color: hexColor('#525252'),
+                      fontSize: 16.sp,
+                    ),
+                  ),
+                  27.verticalSpace,
+                  AccountType(
+                    onTap: viewModel.navigateToPatientRegister,
+                    image: 'pat',
+                    title: 'Patient Access',
+                  ),
+                  SizedBox(height: 27.h),
+                  AccountType(
+                    onTap: viewModel.navigateToProviderRegister,
+                    image: 'prov',
+                    title: 'Provider Access',
+                  ),
+                  SizedBox(height: 80.h),
+                  Text.rich(
+                    TextSpan(
                       children: [
-                        Image.asset('patient1'.png, height: 200.h),
-                        SizedBox(height: 11.h),
-                        Text(
-                          'Patient',
-                          style: BrandTextStyles.semiBold.copyWith(
+                        TextSpan(
+                          text: 'By continuing, you agree to our ',
+                          style: BrandTextStyles.regular.copyWith(
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 27.h),
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.fromLTRB(13.w, 13.h, 13.w, 23.h),
-                    decoration: ShapeDecoration(
-                      color: const Color(0xFFF7F7F7),
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          width: 0.50,
-                          color: Color(0xFFCBCBCB),
+                        TextSpan(
+                          text: 'terms and condition',
+                          style: BrandTextStyles.regular.copyWith(
+                            color: const Color(0xFFE3904C),
+                            fontSize: 18.sp,
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(12.sp),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset('provider1'.png, height: 200.h),
-                        SizedBox(height: 11.h),
-                        Text(
-                          'Provider',
-                          style: BrandTextStyles.semiBold.copyWith(
+                        TextSpan(
+                          text: ' and ',
+                          style: BrandTextStyles.regular.copyWith(
                             color: Colors.black,
                             fontSize: 18.sp,
                           ),
                         ),
+                        TextSpan(
+                          text: 'privacy policy.',
+                          style: BrandTextStyles.regular.copyWith(
+                            color: const Color(0xFFE3904C),
+                            fontSize: 18.sp,
+                            fontFamily: 'Euclid Circular A',
+                            fontWeight: FontWeight.w400,
+                            height: 0.08,
+                          ),
+                        ),
                       ],
                     ),
+                    textAlign: TextAlign.center,
                   ),
-                ),
-                SizedBox(height: 80.h),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: 'By continuing, you agree to our ',
-                        style: BrandTextStyles.regular.copyWith(
-                          color: Colors.black,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'terms and condition',
-                        style: BrandTextStyles.regular.copyWith(
-                          color: const Color(0xFFE3904C),
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' and ',
-                        style: BrandTextStyles.regular.copyWith(
-                          color: Colors.black,
-                          fontSize: 18.sp,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'privacy policy.',
-                        style: BrandTextStyles.regular.copyWith(
-                          color: const Color(0xFFE3904C),
-                          fontSize: 18.sp,
-                          fontFamily: 'Euclid Circular A',
-                          fontWeight: FontWeight.w400,
-                          height: 0.08,
-                        ),
-                      ),
-                    ],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -138,4 +94,51 @@ class AuthView extends StackedView<AuthViewModel> {
 
   @override
   AuthViewModel viewModelBuilder(BuildContext context) => AuthViewModel();
+}
+
+class AccountType extends StatelessWidget {
+  const AccountType({super.key, required this.onTap, required this.image, required this.title});
+
+  final String title;
+  final String image;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(10.w),
+      decoration: ShapeDecoration(
+        color: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          side: BorderSide(width: 1, color: hexColor('#E2E8F0')),
+          borderRadius: BorderRadius.circular(12.r),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(image.png, width: double.infinity),
+          20.verticalSpace,
+          Text(
+            title,
+            style: BrandTextStyles.semiBold.copyWith(
+              color: Colors.black,
+              fontSize: 20.sp,
+            ),
+          ),
+          25.verticalSpace,
+          CustomButton(
+            onTap: onTap,
+            title: 'Select',
+            borderColor: hexColor('#2889AA'),
+            showBorder: true,
+            filled: false,
+            textColor: hexColor('#2889AA'),
+            radius: 7.r,
+          ),
+        ],
+      ),
+    );
+  }
 }
